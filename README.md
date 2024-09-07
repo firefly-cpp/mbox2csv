@@ -1,4 +1,4 @@
-# mbox2csv
+# mbox2csv -- Parse MBOX files and export email data into CSV format
 
 ## About
 
