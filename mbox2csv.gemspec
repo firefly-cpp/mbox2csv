@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
     spec.authors       = %w[firefly-cpp]
     spec.email         = ['iztok@iztok-jr-fister.eu']
 
-    spec.summary       = 'Parse mbox file to csv'
+    spec.summary       = 'Parse MBOX files and export email data into CSV format'
     spec.homepage      = 'https://codeberg.org/firefly-cpp/mbox2csv'
     spec.required_ruby_version = '>= 2.6.0'
 
@@ -18,6 +18,8 @@ Gem::Specification.new do |spec|
     spec.files         = Dir["lib/**/*.rb"] + ["README.md", "LICENSE"]
     spec.require_paths = ['lib']
 
+    spec.add_dependency "base64", "~> 0.2.0"
+    spec.add_dependency "csv", "~> 3.3"
     spec.add_dependency "mail", "~> 2.8.1"
 
 end
