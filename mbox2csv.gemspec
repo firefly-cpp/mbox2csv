@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+Gem::Specification.new do |spec|
+    spec.name          = 'mbox2csv'
+    spec.version       = '0.1.0'
+    spec.license       = 'MIT'
+    spec.authors       = %w[firefly-cpp]
+    spec.email         = ['iztok@iztok-jr-fister.eu']
+
+    spec.summary       = 'Parse mbox file to csv'
+    spec.homepage      = 'https://codeberg.org/firefly-cpp/mbox2csv'
+    spec.required_ruby_version = '>= 2.6.0'
+
+    spec.metadata['homepage_uri'] = spec.homepage
+    spec.metadata['source_code_uri'] = 'https://codeberg.org/firefly-cpp/mbox2csv'
+    spec.metadata['changelog_uri'] = 'https://codeberg.org/firefly-cpp/mbox2csv'
+
+    spec.files         = Dir["lib/**/*.rb"] + ["README.md", "LICENSE"]
+    spec.require_paths = ['lib']
+
+    spec.add_dependency "mail", "~> 2.8.1"
+
+end
