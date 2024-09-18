@@ -4,7 +4,8 @@
 
 <p align="center">
     <a href="#-installation">📦 Installation</a> •
-    <a href="#-usage">🚀 Usage</a>
+    <a href="#-usage">🚀 Usage</a> •
+    <a href="#-licence">🔑 Licence</a>
 </p>
 
 mbox2csv is a Ruby gem that provides a simple way to parse MBOX files and export email data into CSV format. It also generates valuable email statistics for data mining tasks, such as the number of emails sent by each sender and recipient and average body lengths. This is ideal for analyzing email datasets or processing email archives.
@@ -34,3 +35,11 @@ parser = Mbox2CSV::MboxParser.new(mbox_file, all_emails, sender_stats_all_emails
 # Parse the MBOX file, save email data, and generate statistics
 parser.parse
 ```
+
+## 🔑 Licence
+
+This package is distributed under the MIT License. This license can be found online at <http://www.opensource.org/licenses/MIT>.
+
+## Disclaimer
+
+This framework is provided as-is, and there are no guarantees that it fits your purposes or that it is bug-free. Use it at your own risk!
