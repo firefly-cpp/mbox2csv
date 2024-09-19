@@ -36,7 +36,7 @@ parser = Mbox2CSV::MboxParser.new(mbox_file, all_emails, sender_stats_all_emails
 parser.parse
 ```
 
-## 🔑 Licence
+## 🔑 License
 
 This package is distributed under the MIT License. This license can be found online at <http://www.opensource.org/licenses/MIT>.
 
