@@ -1,0 +1,60 @@
+From test@example.com 2024-09-19 20:19:41 +0200
+Date: Thu, 19 Sep 2024 20:19:41 +0200
+From: test@example.com
+To: recipient1@example.com
+Message-ID: <xyz1@xyz>
+Subject: Test Email 1
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is the body of test email 1.
+From test@example.com 2024-09-19 20:19:41 +0200
+Date: Thu, 19 Sep 2024 20:19:41 +0200
+From: test@example.com
+To: recipient2@example.com
+Message-ID: <xyz2@xyz>
+Subject: Test Email 2
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is the body of test email 2.
+From test2@example.com 2024-09-19 20:19:41 +0200
+Date: Thu, 19 Sep 2024 20:19:41 +0200
+From: test2@example.com
+To: recipient@example.com
+Message-ID: <xyz3@xyz>
+Subject: Test Email 3
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is the body of test email 3.
+From test3@example.com 2024-09-19 20:19:41 +0200
+Date: Thu, 19 Sep 2024 20:19:41 +0200
+From: test3@example.com
+To: recipient3@example.com
+Message-ID: <xyz4@xyz>
+Subject: Test Email 4
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is the body of test email 4.
+From test3@example.com 2024-09-19 20:19:41 +0200
+Date: Thu, 19 Sep 2024 20:19:41 +0200
+From: test3@example.com
+To: recipient@example.com
+Message-ID: <xyz5@xyz>
+Subject: Test Email 5
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This is the body of test email 5.
