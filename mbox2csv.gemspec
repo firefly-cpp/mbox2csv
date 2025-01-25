@@ -21,5 +21,6 @@ Gem::Specification.new do |spec|
     spec.add_dependency "base64", "~> 0.2.0"
     spec.add_dependency "csv", "~> 3.3"
     spec.add_dependency "mail", "~> 2.8.1"
+    spec.add_dependency "ruby-progressbar", "~> 1.11"
 
 end

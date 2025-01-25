@@ -1,12 +1,14 @@
 require 'base64'
 require 'csv'
 require 'mail'
+require 'fileutils'
+require 'ruby-progressbar'
 
 module Mbox2CSV
-    # Main class
+    # Main class for parsing MBOX files and saving email data and statistics to CSV files.
     class MboxParser
         # Initializes the MboxParser with file paths for the MBOX file, output CSV file,
-        # and statistics CSV files for sender statistics.
+        # and statistics CSV files for sender and recipient statistics.
         #
         # @param [String] mbox_file Path to the MBOX file to be parsed.
         # @param [String] csv_file Path to the output CSV file where parsed email data will be saved.
@@ -18,30 +20,35 @@ module Mbox2CSV
             @statistics = EmailStatistics.new
             @stats_csv_file = stats_csv_file
             @recipient_stats_csv_file = recipient_stats_csv_file
+            @senders_folder = 'senders/'
+            FileUtils.mkdir_p(@senders_folder) # Create the senders folder if it doesn't exist
         end
 
         # Parses the MBOX file and writes the email data to the specified CSV file.
         # It also saves sender and recipient statistics to separate CSV files.
+        # A progress bar is displayed during the parsing process.
         def parse
+            total_lines = File.foreach(@mbox_file).inject(0) { |c, _line| c + 1 }
+            progressbar = ProgressBar.create(title: "Parsing Emails", total: total_lines, format: "%t: |%B| %p%%")
+
             CSV.open(@csv_file, 'w') do |csv|
-                # Write CSV header
                 csv << ['From', 'To', 'Subject', 'Date', 'Body']
 
                 File.open(@mbox_file, 'r') do |mbox|
                     buffer = ""
                     mbox.each_line do |line|
+                        progressbar.increment
                         if line.start_with?("From ")
                             process_email_block(buffer, csv) unless buffer.empty?
-                            buffer = "" # Reset buffer
+                            buffer = ""
                         end
-                        buffer << line # Append line to buffer
+                        buffer << line
                     end
-                    process_email_block(buffer, csv) unless buffer.empty? # Process last email block
+                    process_email_block(buffer, csv) unless buffer.empty?
                 end
             end
             puts "Parsing completed. Data saved to #{@csv_file}"
 
-            # Save and print statistics after parsing
             @statistics.save_sender_statistics(@stats_csv_file)
             @statistics.save_recipient_statistics(@recipient_stats_csv_file)
         rescue => e
@@ -51,7 +58,8 @@ module Mbox2CSV
         private
 
         # Processes an individual email block from the MBOX file, extracts the email fields,
-        # and writes them to the CSV. Also records email statistics for analysis.
+        # and writes them to the CSV. Also records email statistics for analysis and creates
+        # sender-specific CSV files.
         #
         # @param [String] buffer The email block from the MBOX file.
         # @param [CSV] csv The CSV object where email data is written.
@@ -62,14 +70,13 @@ module Mbox2CSV
             to = ensure_utf8(mail.to ? mail.to.join(", ") : '', 'UTF-8')
             subject = ensure_utf8(mail.subject ? mail.subject : '', 'UTF-8')
             date = ensure_utf8(mail.date ? mail.date.to_s : '', 'UTF-8')
-
             body = decode_body(mail)
 
-            # Write to CSV
             csv << [from, to, subject, date, body]
 
-            # Record email for statistics
             @statistics.record_email(from, to, body.length)
+
+            save_email_to_sender_csv(from, to, subject, date, body)
         rescue => e
             puts "Error processing email block: #{e.message}"
         end
@@ -108,15 +115,45 @@ module Mbox2CSV
         text = text.force_encoding(charset) if charset
         text.encode('UTF-8', invalid: :replace, undef: :replace, replace: '?')
     end
+
+    # Saves an email to a sender-specific CSV file.
+    #
+    # @param [String] from The sender of the email.
+    # @param [String] to The recipient(s) of the email.
+    # @param [String] subject The subject of the email.
+    # @param [String] date The date of the email.
+    # @param [String] body The body of the email.
+    def save_email_to_sender_csv(from, to, subject, date, body)
+        return if from.empty?
+
+        sender_file = File.join(@senders_folder, "#{sanitize_filename(from)}.csv")
+
+        CSV.open(sender_file, 'a') do |csv|
+            if File.size(sender_file).zero?
+                csv << ['From', 'To', 'Subject', 'Date', 'Body'] # Add header if file is new
+            end
+            csv << [from, to, subject, date, body]
+        end
+    rescue => e
+        puts "Error writing to sender CSV file for #{from}: #{e.message}"
+    end
+
+    # Sanitizes filenames by replacing invalid characters with underscores.
+    #
+    # @param [String] filename The input filename.
+    # @return [String] A sanitized version of the filename.
+    def sanitize_filename(filename)
+        filename.gsub(/[^0-9A-Za-z\-]/, '_')
+    end
 end
 
 # The EmailStatistics class is responsible for gathering and writing statistics related to emails.
 # It tracks sender frequency, recipient frequency, and calculates the average email body length per sender.
 class EmailStatistics
     def initialize
-        @sender_counts = Hash.new(0) # Keeps count of emails per sender
-        @recipient_counts = Hash.new(0) # Keeps count of emails per recipient
-        @body_lengths = Hash.new { |hash, key| hash[key] = [] } # Stores body lengths per sender
+        @sender_counts = Hash.new(0)
+        @recipient_counts = Hash.new(0)
+        @body_lengths = Hash.new { |hash, key| hash[key] = [] }
     end
 
     # Records an email's sender, recipients, and body length for statistical purposes.
