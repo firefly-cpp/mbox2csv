@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
     spec.name          = 'mbox2csv'
-    spec.version       = '0.1.2'
+    spec.version       = '0.2.0'
     spec.license       = 'MIT'
     spec.authors       = %w[firefly-cpp]
     spec.email         = ['iztok@iztok-jr-fister.eu']
