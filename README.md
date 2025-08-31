@@ -34,6 +34,10 @@ parser = Mbox2CSV::MboxParser.new(mbox_file, all_emails, sender_stats_all_emails
 
 # Parse the MBOX file, save email data, and generate statistics
 parser.parse
+
+# Extract attachments
+parser.extract_attachments(extract: true, filetypes: %w[pdf jpg], output_folder: "exports")
+
 ```
 
 ## 🔑 License
